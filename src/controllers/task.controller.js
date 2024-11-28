@@ -18,6 +18,10 @@ const createTask = asyncHandler(async (req, res) => {
   const startTimeUTC = new Date(startTime).toISOString();
   const endTimeUTC = new Date(endTime).toISOString();
 
+  if (startTime > endTime) {
+    throw new ApiError(400, "Start Time should be prior to End Time");
+  }
+
   const newTask = await Task.create({
     title,
     priority,
@@ -66,6 +70,10 @@ const updateTask = asyncHandler(async (req, res) => {
 
   const startTimeUTC = new Date(startTime).toISOString();
   const endTimeUTC = new Date(endTime).toISOString();
+
+  if (startTime > endTime) {
+    throw new ApiError(400, "Start Time should be prior to End Time");
+  }
 
   const updatedTask = await Task.findByIdAndUpdate(
     taskId,
